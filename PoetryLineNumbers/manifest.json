@@ -1,17 +1,11 @@
 {
     "manifest_version": 3,
     "name": "Poem Line Numbers",
-    "version": "0.3",
+    "version": "0.4",
     "description": "Add line numbers to poems on PoetryFoundation.org",
-    "permissions": [
-      "activeTab",
-      "scripting"
-    ],
+    "permissions": [],
     "action": {
       "default_popup": "hello.html"
-    },
-    "background": {
-      "service_worker": "background.js"
     },
     "content_scripts": [
       {
