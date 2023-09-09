@@ -7,4 +7,3 @@
  
  ### Improvements needed
  * Interface for extension pop-up.
- * Efficiency for traversing long poems. Line numbers in [Beowulf](https://www.poetryfoundation.org/poems/43521/beowulf-old-english-version) takes about five seconds to load for me.
