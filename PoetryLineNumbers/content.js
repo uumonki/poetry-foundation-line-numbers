@@ -1,20 +1,29 @@
-var poemDivs = document.querySelectorAll('.o-poem div');
-var lineNumber = 1;
-var previousLineEmpty = true;
+const poemDivs = document.querySelectorAll('.o-poem div');
+let lineNumber = 1;
+let previousLineEmpty = true;
 
-poemDivs.forEach(function(div) {
-    var text = div.innerText.trim();
-    var isEpigraph = div.querySelector('.c-epigraph') !== null;
-    var hasDivChild = div.querySelector('div') !== null || div.closest('.c-epigraph') !== null;
-    var isSmallCaps = div.querySelector('[style*="font-variant:small-caps;"]') !== null && div.querySelector('[style*="font-variant:small-caps;"]').innerText.trim() === text;
-    var isStrongLine = div.querySelector('strong') !== null && div.querySelector('strong').innerText.trim() === text;
-    var isHeading = isSmallCaps || isStrongLine;
-    var isSeparator = text.length === 1 && !text.match(/[A-Za-z]/) || text.match(/_+|-+/) !== null && text.match(/_+|-+/)[0].length === text.length;
+poemDivs.forEach(function (div) {
+    const text = div.textContent.trim();
+    const isEpigraph = div.querySelector('.c-epigraph') !== null;
+    const hasDivChild = div.querySelector('div') !== null || isEpigraph;
 
     if (!hasDivChild && !isEpigraph) {
+        const isOneCharSeparator = text.length === 1 && !text.match(/[A-Za-z]/);
+        const multiCharSeparator = text.match(/_+|-+/)
+        const isMultiCharSeparator = multiCharSeparator !== null && multiCharSeparator[0].length === text.length;
+        const isSeparator = isOneCharSeparator || isMultiCharSeparator;
+
         if (text.length > 0 && !isSeparator) {
+            const smallCapsElement = div.querySelector('[style*="font-variant:small-caps;"]');
+            const isSmallCaps = smallCapsElement !== null && smallCapsElement.innerText.trim() === text;
+
+            const strongElement = div.querySelector('strong');
+            const isStrongLine = strongElement !== null && strongElement.innerText.trim() === text;
+
+            const isHeading = isSmallCaps || isStrongLine;
+
             if (!(isHeading && previousLineEmpty)) {
-                var lineContent = div.innerHTML;
+                const lineContent = div.innerHTML;
                 div.innerHTML = '<span class="line-number">' + lineNumber + ' &nbsp; </span><span class="line-content">' + lineContent + '</span>';
                 lineNumber++;
             }
