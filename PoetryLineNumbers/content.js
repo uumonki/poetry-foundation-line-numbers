@@ -9,8 +9,7 @@ poemDivs.forEach(function (div) {
 
     if (!hasDivChild && !isEpigraph) {
         const isOneCharSeparator = text.length === 1 && !text.match(/[A-Za-z]/);
-        const multiCharSeparator = text.match(/_+|-+/)
-        const isMultiCharSeparator = multiCharSeparator !== null && multiCharSeparator[0].length === text.length;
+        const isMultiCharSeparator = (text !== "...") && /^[.*#\-_·\s]*$/.test(text);
         const isSeparator = isOneCharSeparator || isMultiCharSeparator;
 
         if (text.length > 0 && !isSeparator) {
@@ -20,7 +19,10 @@ poemDivs.forEach(function (div) {
             const strongElement = div.querySelector('strong');
             const isStrongLine = strongElement !== null && strongElement.innerText.trim() === text;
 
-            const isHeading = isSmallCaps || isStrongLine;
+            const partWithNumber = text.match(/^PART\s+(\d+|ONE|TWO|THREE|FOUR|FIVE|SIX|SEVEN|EIGHT|NINE|TEN|ELEVEN|TWELVE|THIRTEEN|FOURTEEN|FIFTEEN|SIXTEEN|SEVENTEEN|EIGHTEEN|NINETEEN|TWENTY)$/i);
+            const isPartWithNumber = partWithNumber !== null && partWithNumber[0].length === text.length;
+
+            const isHeading = isSmallCaps || isStrongLine || isPartWithNumber;
 
             if (!(isHeading && previousLineEmpty)) {
                 const lineContent = div.innerHTML;
