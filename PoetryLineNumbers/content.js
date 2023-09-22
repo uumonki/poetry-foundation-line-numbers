@@ -2,7 +2,9 @@ const poemDivs = document.querySelectorAll('.o-poem div');
 let lineNumber = 1;
 let previousLineEmpty = true;
 
-poemDivs.forEach(function (div) {
+poemDivs.forEach(updateLine);
+
+function updateLine(div) {
     const text = div.textContent.trim();
     const isEpigraph = div.querySelector('.c-epigraph') !== null;
     const hasDivChild = div.querySelector('div') !== null || isEpigraph;
@@ -26,7 +28,23 @@ poemDivs.forEach(function (div) {
 
             if (!(isHeading && previousLineEmpty)) {
                 const lineContent = div.innerHTML;
-                div.innerHTML = '<span class="line-number">' + lineNumber + ' &nbsp; </span><span class="line-content">' + lineContent + '</span>';
+                const lineNumberSpan = document.createElement('span');
+                div.innerHTML = '';
+
+                lineNumberSpan.className = 'line-number';
+                lineNumberSpan.innerHTML = lineNumber + ' &nbsp; ';
+                lineNumberSpan.title = 'Click to remove this number';
+                lineNumberSpan.addEventListener('click', function () {
+                    updateLineNumbers(parseInt(this.textContent));
+                    this.remove();
+                });
+                div.appendChild(lineNumberSpan);
+
+                const lineContentDiv = document.createElement('div');
+                lineContentDiv.className = 'line-content';
+                lineContentDiv.innerHTML = lineContent;
+                div.appendChild(lineContentDiv);
+
                 lineNumber++;
             }
             previousLineEmpty = false;
@@ -34,4 +52,14 @@ poemDivs.forEach(function (div) {
             previousLineEmpty = true;
         }
     }
-});
+}
+
+function updateLineNumbers(start) {
+    const allLineNumberElements = document.querySelectorAll('.line-number');
+    allLineNumberElements.forEach((lineNumberElement) => {
+        if (parseInt(lineNumberElement.textContent) > start) {
+            console.log(lineNumberElement.textContent)
+            lineNumberElement.innerHTML = (parseInt(lineNumberElement.textContent) - 1) + ' &nbsp; ';
+        }
+    });
+}
