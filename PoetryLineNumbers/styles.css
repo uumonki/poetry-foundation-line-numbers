@@ -1,7 +1,7 @@
 .o-poem div {
     position: relative;
 }
-
+  
 .line-number {
     position: absolute;
     left: -2.5em;
@@ -9,10 +9,5 @@
     color: gray;
     font-size: 0.8em;
     top: 0.2em;
-    cursor: pointer;
-    transition: color 0.3s;
 }
-
-.line-number:hover {
-    background-color: #333;
-}
+  
